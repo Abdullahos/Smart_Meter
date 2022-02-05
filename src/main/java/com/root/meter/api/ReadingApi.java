@@ -1,5 +1,6 @@
 package com.root.meter.api;
 
+import com.root.meter.DTO.ReadingDTO;
 import com.root.meter.model.Reading;
 import com.root.meter.service.ReadingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class ReadingApi {
     @Autowired
     private ReadingService readingService;
     @PostMapping("/post")
-    public ResponseEntity<Reading> save(@RequestBody Reading reading){
-        if(readingService.save(reading) != null ){
+    public ResponseEntity<Reading> save(@RequestBody ReadingDTO readingDTO){
+        if(readingService.save(readingDTO) != null ){
             return ResponseEntity.ok().build();
         }
         else {
@@ -23,9 +24,10 @@ public class ReadingApi {
         }
     }
     @GetMapping("/get")
-    public List<Reading> getReadingById(Long meterId){
+    public List<ReadingDTO> getReadingById(Long meterId){
         return readingService.getReadingsByMeterId(meterId);
     }
+    //TODO: implement the rest of GET methods
     /*
     @GetMapping("/get")
 
