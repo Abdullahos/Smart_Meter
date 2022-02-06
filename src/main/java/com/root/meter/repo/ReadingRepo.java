@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReadingRepo extends CrudRepository<Reading, Long> {
-    Optional<List<Reading>> findAllByMeterId(Long meterId);
+    Optional<List<Reading>> findAllByMeterIdId(Long meterId);
 }

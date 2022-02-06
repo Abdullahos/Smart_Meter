@@ -24,7 +24,7 @@ public class ReadingApi {
         }
     }
     @GetMapping("/get")
-    public List<ReadingDTO> getReadingById(Long meterId){
+    public List<ReadingDTO> getReadingById(@RequestParam Long meterId){
         return readingService.getReadingsByMeterId(meterId);
     }
     //TODO: implement the rest of GET methods

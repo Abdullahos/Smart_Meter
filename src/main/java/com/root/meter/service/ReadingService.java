@@ -24,7 +24,7 @@ public class ReadingService {
     }
 
     public List<ReadingDTO> getReadingsByMeterId(Long meterId){
-        Optional<List<Reading>> optReadingList = readingRepo.findAllByMeterId(meterId);
+        Optional<List<Reading>> optReadingList = readingRepo.findAllByMeterIdId(meterId);
         if(optReadingList.isPresent()){
             List<ReadingDTO>readingDTOS = new ArrayList<>();
             List<Reading> readings = optReadingList.get();
