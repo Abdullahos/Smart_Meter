@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+/**
+ * represent summation of readings per hour
+ */
 public class Reading {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +19,10 @@ public class Reading {
     private LocalDateTime timeStamp;
     private Long volt;
     private Long current;
-    private Long energy;
+    private Long energy;    //kw
     private Long activePower;
     private Long reActivePower;
+    private Double amount;   //cents per kW
 
     public Long getId() {
         return id;
@@ -82,5 +86,13 @@ public class Reading {
 
     public void setReActivePower(Long reActivePower) {
         this.reActivePower = reActivePower;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }
