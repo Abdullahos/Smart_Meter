@@ -6,9 +6,9 @@ import com.root.meter.repo.MeterRepo;
 import com.root.meter.repo.ReadingRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,25 @@ public class ReadingService {
     private ReadingRepo readingRepo;
     @Autowired
     private MeterRepo meterRepo;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    //TODO: replace the following with real user state
+    String fakeUserState = "Utah";
 
     public Long save(ReadingDTO readingDTO){
-        return readingRepo.save(dtoToReading(readingDTO)).getId();
+        //get the state KWH price in cents
+        Double statePricePerKWH = jdbcTemplate.queryForObject(
+                "select price from KWStatesPrices where state = ?",
+                Double.class,
+                fakeUserState
+        );
+        //calculate the total price in (cents) of this reading
+        double amount = readingDTO.getEnergy()*statePricePerKWH;
+        Reading reading = dtoToReading(readingDTO);
+        //set the reading amount to store in db
+        reading.setAmount(amount);
+        return readingRepo.save(reading).getId();
     }
 
     public List<ReadingDTO> getReadingsByMeterId(Long meterId){
