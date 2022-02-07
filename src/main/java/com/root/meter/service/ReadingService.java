@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,4 +52,15 @@ public class ReadingService {
         return readingDTO;
     }
 
+    public List<ReadingDTO> getReadingsByHour(LocalDateTime start, LocalDateTime end) {
+        Optional<List<Reading>> optReadingList = readingRepo.findAllByTimeStampBetween(start, end);
+        if(optReadingList.isPresent()){
+            List<ReadingDTO>readingDTOS = new ArrayList<>();
+            List<Reading> readings = optReadingList.get();
+            //TODO: search more on lambda expression
+            readings.forEach(reading -> readingDTOS.add(readingToDto(reading)));
+            return readingDTOS;
+        }
+        else return new ArrayList<>();
+    }
 }
