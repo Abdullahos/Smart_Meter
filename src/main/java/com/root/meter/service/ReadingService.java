@@ -2,6 +2,7 @@ package com.root.meter.service;
 
 import com.root.meter.DTO.ReadingDTO;
 import com.root.meter.model.Reading;
+import com.root.meter.model.User;
 import com.root.meter.repo.MeterRepo;
 import com.root.meter.repo.ReadingRepo;
 import org.springframework.beans.BeanUtils;
@@ -21,17 +22,21 @@ public class ReadingService {
     @Autowired
     private MeterRepo meterRepo;
     @Autowired
+    private UserService userService;
+    @Autowired
     JdbcTemplate jdbcTemplate;
 
-    //TODO: replace the following with real user state
-    String fakeUserState = "Utah";
-
     public Long save(ReadingDTO readingDTO){
+        //get the state price of the user of that meter
+        User userByMeterId = userService.findUserByMeterId(readingDTO.getMeterId());
+        //TODO:should i check of null for useByMeterID although if not exist the user
+        // service should throw not found exception??
+        String userState = userByMeterId.getState();
         //get the state KWH price in cents
         Double statePricePerKWH = jdbcTemplate.queryForObject(
                 "select price from KWStatesPrices where state = ?",
                 Double.class,
-                fakeUserState
+                userState
         );
         //calculate the total price in (cents) of this reading
         double amount = readingDTO.getEnergy()*statePricePerKWH;
