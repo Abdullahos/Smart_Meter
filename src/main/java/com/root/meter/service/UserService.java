@@ -24,6 +24,15 @@ public class UserService {
         return userRepo.save(dtoToUser(userDTO));
     }
 
+    public User findUserByMeterId(Long meterId){
+        Optional<User> optionalUser = userRepo.findByMeterId(meterId);
+        if(optionalUser.isPresent()){
+            return optionalUser.get();
+        }
+        else {
+            throw new ObjectNotFoundException("no user linked to this meter with id: "+meterId);
+        }
+    }
     public UserDTO userToDTO(User user){
         UserDTO dto = new UserDTO();
         BeanUtils.copyProperties(user, dto);
