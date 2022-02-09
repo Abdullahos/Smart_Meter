@@ -1,15 +1,26 @@
 package com.root.meter.DTO;
 
+
+import javax.validation.constraints.NotNull;
+
 public class UserDTO {
 
     private Long meterId;
+    @NotNull(message="username can't be null")
     private String name;
+    @NotNull(message="user's email can't be null")
     private String email;
+    @NotNull(message="password can't be null")
     private String password;
+    @NotNull(message="user state can't be null")
     private String state;
+    @NotNull(message="user phone can't be null")
     private String phone;
+    @NotNull(message="user address can't be null")
     private String address;
+    @NotNull(message="user's credit card number can't be null")
     private String creditCardNo;
+    @NotNull(message="user's cvv can't be null")
     private String  cvv; //card verification value for payment online or over the phone.
 
     public Long getMeterId() {
