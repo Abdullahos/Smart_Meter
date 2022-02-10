@@ -2,31 +2,31 @@ package com.root.meter.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Transactional
 @Entity
 /**
  * represent summation of readings per hour
  */
-public class Reading {
+public class DailyReading {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "meterId")
-    private Meter meterId;
-    private Date timeStamp;
-    private Long volt;
-    private Long current;
-    private Long energy;    //kw
-    private Long activePower;
-    private Long reActivePower;
+    @JsonIgnore
+    private Meter meter;
+    private LocalDate date;
+    private Double volt;
+    private Double current;
+    private Double energy;    //kw
+    private Double activePower;
+    private Double reActivePower;
     private Double amount;   //cents per kW
 
     public Long getId() {
@@ -37,59 +37,59 @@ public class Reading {
         this.id = id;
     }
 
-    public Meter getMeterId() {
-        return meterId;
+    public Meter getMeter() {
+        return meter;
     }
 
-    public void setMeterId(Meter meterId) {
-        this.meterId = meterId;
+    public void setMeter(Meter meter) {
+        this.meter = meter;
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public Long getVolt() {
+    public Double getVolt() {
         return volt;
     }
 
-    public void setVolt(Long volt) {
+    public void setVolt(Double volt) {
         this.volt = volt;
     }
 
-    public Long getCurrent() {
+    public Double getCurrent() {
         return current;
     }
 
-    public void setCurrent(Long current) {
+    public void setCurrent(Double current) {
         this.current = current;
     }
 
-    public Long getEnergy() {
+    public Double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(Long energy) {
+    public void setEnergy(Double energy) {
         this.energy = energy;
     }
 
-    public Long getActivePower() {
+    public Double getActivePower() {
         return activePower;
     }
 
-    public void setActivePower(Long activePower) {
+    public void setActivePower(Double activePower) {
         this.activePower = activePower;
     }
 
-    public Long getReActivePower() {
+    public Double getReActivePower() {
         return reActivePower;
     }
 
-    public void setReActivePower(Long reActivePower) {
+    public void setReActivePower(Double reActivePower) {
         this.reActivePower = reActivePower;
     }
 
