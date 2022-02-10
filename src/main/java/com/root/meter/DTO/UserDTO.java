@@ -4,7 +4,6 @@ package com.root.meter.DTO;
 import javax.validation.constraints.NotNull;
 
 public class UserDTO {
-
     private Long meterId;
     @NotNull(message="username can't be null")
     private String name;

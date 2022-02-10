@@ -2,19 +2,19 @@ package com.root.meter.DTO;
 
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
-public class ReadingDTO {
+public class DailyReadingDTO {
     private Long meterId;
     @NotNull(message="timeStamp can't be null")
-    private Date timeStamp;
+    private LocalDate date;
     @NotNull(message="volt can't be null")
-    private Long volt;
+    private Double volt;
     @NotNull(message="current can't be null")
-    private Long current;
-    private Long energy;
-    private Long activePower;
-    private Long reActivePower;
+    private Double current;
+    private Double energy;
+    private Double activePower;
+    private Double reActivePower;
 
     public Long getMeterId() {
         return meterId;
@@ -24,51 +24,51 @@ public class ReadingDTO {
         this.meterId = meterId;
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public Long getVolt() {
+    public Double getVolt() {
         return volt;
     }
 
-    public void setVolt(Long volt) {
+    public void setVolt(Double volt) {
         this.volt = volt;
     }
 
-    public Long getCurrent() {
+    public Double getCurrent() {
         return current;
     }
 
-    public void setCurrent(Long current) {
+    public void setCurrent(Double current) {
         this.current = current;
     }
 
-    public Long getEnergy() {
+    public Double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(Long energy) {
+    public void setEnergy(Double energy) {
         this.energy = energy;
     }
 
-    public Long getActivePower() {
+    public Double getActivePower() {
         return activePower;
     }
 
-    public void setActivePower(Long activePower) {
+    public void setActivePower(Double activePower) {
         this.activePower = activePower;
     }
 
-    public Long getReActivePower() {
+    public Double getReActivePower() {
         return reActivePower;
     }
 
-    public void setReActivePower(Long reActivePower) {
+    public void setReActivePower(Double reActivePower) {
         this.reActivePower = reActivePower;
     }
 }
