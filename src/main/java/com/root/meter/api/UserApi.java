@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserApi {
@@ -18,7 +20,7 @@ public class UserApi {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
+    public ResponseEntity<User> save(@Valid @RequestBody UserDTO userDTO){
         User savedUser = userService.save(userDTO);
         if(savedUser == null){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
