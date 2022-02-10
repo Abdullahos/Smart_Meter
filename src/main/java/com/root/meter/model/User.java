@@ -1,7 +1,9 @@
 package com.root.meter.model;
 
-import javax.persistence.*;
 
+import javax.persistence.*;
+import javax.transaction.Transactional;
+@Transactional
 @Entity
 public class User {
     @Id
