@@ -1,8 +1,6 @@
 package com.root.meter.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -18,9 +16,8 @@ public class Meter {
     @JoinColumn(name = "userId")
     @JsonIgnore //to avoid infinite recursion meter->user->meter->user->....
     private User user;
-    @OneToMany
-    @JsonIgnore
-    private List<Reading> readingList = new ArrayList<Reading>();
+    @OneToMany(mappedBy = "meter")  //meter must be the same spelling as the property in DailyReading class
+    private List<DailyReading> dailyReadingList = new ArrayList<>();
 
     public Meter(User user) {
         this.user = user;
@@ -45,11 +42,15 @@ public class Meter {
         this.user = user;
     }
 
-    public List<Reading> getReadingList() {
-        return readingList;
+    public List<DailyReading> getDailyReadingList() {
+        return dailyReadingList;
     }
 
-    public void setReadingList(List<Reading> readingList) {
-        this.readingList = readingList;
+    public void setDailyReadingList(List<DailyReading> dailyReadingList) {
+        this.dailyReadingList = dailyReadingList;
+    }
+
+    public void addToReadingList(DailyReading dailyReading) {
+        this.dailyReadingList.add(dailyReading);
     }
 }
