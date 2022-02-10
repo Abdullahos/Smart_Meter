@@ -1,50 +1,34 @@
-package com.root.meter.model;
+package com.root.meter.DTO;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Entity
-/**
- * represent summation of readings per hour
- */
-public class Reading {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
-    @ManyToOne
-    @JoinColumn(name = "meterId")
-    private Meter meterId;
-
-    private LocalDateTime timeStamp;
+public class ReadingDTO {
+    private Long meterId;
+    @NotNull(message="timeStamp can't be null")
+    private Date timeStamp;
+    @NotNull(message="volt can't be null")
     private Long volt;
+    @NotNull(message="current can't be null")
     private Long current;
-    private Long energy;    //kw
+    private Long energy;
     private Long activePower;
     private Long reActivePower;
-    private Double amount;   //cents per kW
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Meter getMeterId() {
+    public Long getMeterId() {
         return meterId;
     }
 
-    public void setMeterId(Meter meterId) {
+    public void setMeterId(Long meterId) {
         this.meterId = meterId;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public Date getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
+    public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -86,13 +70,5 @@ public class Reading {
 
     public void setReActivePower(Long reActivePower) {
         this.reActivePower = reActivePower;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
     }
 }
