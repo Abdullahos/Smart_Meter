@@ -1,27 +1,29 @@
 package com.root.meter.api;
 
-import com.root.meter.DTO.ReadingDTO;
-import com.root.meter.model.Reading;
+import com.root.meter.DTO.DailyReadingDTO;
+import com.root.meter.model.DailyReading;
 import com.root.meter.service.ReadingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
-
+@Transactional
 @RestController
 @RequestMapping("/reading")
 public class ReadingApi {
     @Autowired
     private ReadingService readingService;
     @PostMapping("/post")
-    public ResponseEntity<Reading> save(@RequestBody ReadingDTO readingDTO){
-        if(readingService.save(readingDTO) != null ){
-            return ResponseEntity.ok().build();
+    public ResponseEntity<DailyReading> save(@RequestBody DailyReadingDTO dailyReadingDTO){
+        DailyReading reading = readingService.save(dailyReadingDTO);
+        if(reading != null){
+            return new ResponseEntity<DailyReading>(reading, HttpStatus.CREATED);
         }
         else {
             return ResponseEntity.internalServerError().build();
@@ -34,7 +36,7 @@ public class ReadingApi {
      * @return
      */
     @GetMapping("/get")
-    public List<ReadingDTO> getReadingById(@RequestParam Long meterId){
+    public List<DailyReadingDTO> getReadingById(@RequestParam Long meterId){
         return readingService.getReadingsByMeterId(meterId);
     }
 
@@ -43,14 +45,12 @@ public class ReadingApi {
      * @return
      */
     @GetMapping("/get/period")
-    public List<ReadingDTO> getReadingBetweenTwoTimeStamps(@RequestParam String start, @RequestParam String end){
-        DateTimeFormatter dateTimeFormat =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    public List<DailyReadingDTO> getReadingBetweenTwoTimeStamps(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end){
 
-        //Next parse the date from the @RequestParam, specifying the TO type as a TemporalQuery:
-        LocalDateTime startDate = dateTimeFormat.parse(start, LocalDateTime::from);
-        LocalDateTime endDate = dateTimeFormat.parse(end, LocalDateTime::from);
-        return  readingService.getReadingsByHour(startDate, endDate);
+
+        return  readingService.getReadingsBetween2TimeStamps(start, end);
     }
     //TODO: implement the rest of GET methods
     /*
