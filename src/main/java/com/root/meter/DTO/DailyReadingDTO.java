@@ -11,7 +11,7 @@ public class DailyReadingDTO {
     @NotNull(message="volt can't be null")
     private Double volt;
     @NotNull(message="current can't be null")
-    private Double current;
+    private Double amber;
     private Double energy;
     private Double activePower;
     private Double reActivePower;
@@ -40,12 +40,12 @@ public class DailyReadingDTO {
         this.volt = volt;
     }
 
-    public Double getCurrent() {
-        return current;
+    public Double getAmber() {
+        return amber;
     }
 
-    public void setCurrent(Double current) {
-        this.current = current;
+    public void setAmber(Double amber) {
+        this.amber = amber;
     }
 
     public Double getEnergy() {

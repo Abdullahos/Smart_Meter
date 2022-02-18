@@ -15,12 +15,14 @@ public class Meter {
     @OneToOne
     @JoinColumn(name = "userId")
     @JsonIgnore //to avoid infinite recursion meter->user->meter->user->....
-    private User user;
-    @OneToMany(mappedBy = "meter")  //meter must be the same spelling as the property in DailyReading class
+    private Users users;
+    @OneToMany(mappedBy = "meter",fetch = FetchType.LAZY)  //meter must be the same spelling as the property in DailyReading class
     private List<DailyReading> dailyReadingList = new ArrayList<>();
-
-    public Meter(User user) {
-        this.user = user;
+    @OneToMany(mappedBy = "meter",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<MonthlyConsumption> monthlyConsumptionList = new ArrayList<>();
+    public Meter(Users user) {
+        this.users = user;
     }
 
     public Meter() {
@@ -34,12 +36,12 @@ public class Meter {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public List<DailyReading> getDailyReadingList() {
@@ -52,5 +54,13 @@ public class Meter {
 
     public void addToReadingList(DailyReading dailyReading) {
         this.dailyReadingList.add(dailyReading);
+    }
+
+    public List<MonthlyConsumption> getMonthlyConsumptionList() {
+        return monthlyConsumptionList;
+    }
+
+    public void setMonthlyConsumptionList(List<MonthlyConsumption> monthlyConsumptionList) {
+        this.monthlyConsumptionList = monthlyConsumptionList;
     }
 }

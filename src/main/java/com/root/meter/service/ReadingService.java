@@ -2,7 +2,7 @@ package com.root.meter.service;
 
 import com.root.meter.DTO.DailyReadingDTO;
 import com.root.meter.model.DailyReading;
-import com.root.meter.model.User;
+import com.root.meter.model.Users;
 import com.root.meter.repo.ReadingRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,9 @@ public class ReadingService {
     @Autowired
     private UserService userService;
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private MonthlyConsumptionService monthlyConsumptionService;
 
     /**
      * method to save the reading dto
@@ -32,20 +34,31 @@ public class ReadingService {
      * @return reading id
      */
     public DailyReading save(DailyReadingDTO dailyReadingDTO) {
+
         //get the state price of the user of that meter
-        User userByMeterId = userService.findUserByMeterId(dailyReadingDTO.getMeterId());
+        Users userByMeterId = userService.findUserByMeterId(dailyReadingDTO.getMeterId());
         //TODO:should i check of null for useByMeterID although if not exist the user?
         // service should throw not found exception??
         String userState = userByMeterId.getState();
         //get the state KWH price in cents
-        Double statePricePerKWH = jdbcTemplate.queryForObject(
+        /*Double statePricePerKWH = jdbcTemplate.queryForObject(
                 "select price from KWStatesPrices where state = ?",
                 Double.class,
                 userState
         );
+         */
         //calculate the total price in (cents) of this reading
+        Double statePricePerKWH = 10.0;
         double amount = dailyReadingDTO.getEnergy() * statePricePerKWH;
         double energy = dailyReadingDTO.getEnergy();
+
+        DailyReading newReading = new DailyReading(
+                meterService.findById(dailyReadingDTO.getMeterId()),
+                dailyReadingDTO.getDate(), dailyReadingDTO.getVolt(),dailyReadingDTO.getAmber(),dailyReadingDTO.getEnergy(),amount
+        );
+        monthlyConsumptionService.save(newReading);
+
+
         DailyReading dailyReading = dtoToReading(dailyReadingDTO);
         //check if this reading is the first reading in the day
         Optional<DailyReading> optionalReading = readingRepo.findAllByMeterIdAndDate(dailyReadingDTO.getMeterId(), dailyReadingDTO.getDate());

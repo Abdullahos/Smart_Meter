@@ -1,9 +1,10 @@
 package com.root.meter.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.time.Month;
-import java.time.Year;
+import java.time.YearMonth;
 
 @Transactional
 @Entity
@@ -13,11 +14,35 @@ public class MonthlyConsumption {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "meterId")
+    @JsonIgnore
     private Meter meter;
-    private Month month;
-    private Year year;
+    private YearMonth yearMonth;
     private Double amount;  //$
     private Double energy;  //kwh
+    private Double volt;
+    private Double amber;
+
+    public MonthlyConsumption(Meter meter,Double amount, Double energy, Double volt, Double current, YearMonth yearMonth) {
+        this.meter = meter;
+        this.amount = amount;
+        this.yearMonth = yearMonth;
+        this.energy = energy;
+        this.volt = volt;
+        this.amber = current;
+    }
+
+    public MonthlyConsumption(Meter meter,Long id, Double amount, Double energy, Double volt, Double current, YearMonth yearMonth) {
+        this.meter = meter;
+        this.id = id;
+        this.yearMonth = yearMonth;
+        this.amount = amount;
+        this.energy = energy;
+        this.volt = volt;
+        this.amber = current;
+    }
+
+    public MonthlyConsumption() {
+    }
 
     public Long getId() {
         return id;
@@ -35,20 +60,28 @@ public class MonthlyConsumption {
         this.meter = meter;
     }
 
-    public Month getMonth() {
-        return month;
+    public Double getVolt() {
+        return volt;
     }
 
-    public void setMonth(Month month) {
-        this.month = month;
+    public void setVolt(Double volt) {
+        this.volt = volt;
     }
 
-    public Year getYear() {
-        return year;
+    public Double getAmber() {
+        return amber;
     }
 
-    public void setYear(Year year) {
-        this.year = year;
+    public void setAmber(Double amber) {
+        this.amber = amber;
+    }
+
+    public YearMonth getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(YearMonth yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     public Double getAmount() {

@@ -23,11 +23,23 @@ public class DailyReading {
     private Meter meter;
     private LocalDate date;
     private Double volt;
-    private Double current;
+    private Double amber;
     private Double energy;    //kw
     private Double activePower;
     private Double reActivePower;
     private Double amount;   //cents per kW
+
+    public DailyReading() {
+    }
+
+    public DailyReading(Meter meter, LocalDate date, Double volt, Double current, Double energy, Double amount) {
+        this.meter = meter;
+        this.date = date;
+        this.volt = volt;
+        this.amber = current;
+        this.energy = energy;
+        this.amount = amount;
+    }
 
     public Long getId() {
         return id;
@@ -61,12 +73,12 @@ public class DailyReading {
         this.volt = volt;
     }
 
-    public Double getCurrent() {
-        return current;
+    public Double getAmber() {
+        return amber;
     }
 
-    public void setCurrent(Double current) {
-        this.current = current;
+    public void setAmber(Double amber) {
+        this.amber = amber;
     }
 
     public Double getEnergy() {

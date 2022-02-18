@@ -3,7 +3,7 @@ package com.root.meter.service;
 import com.root.meter.DTO.UserDTO;
 import com.root.meter.Exception.ObjectNotFoundException;
 import com.root.meter.model.Meter;
-import com.root.meter.model.User;
+import com.root.meter.model.Users;
 import com.root.meter.repo.UserRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class UserService {
      * @param userDTO
      * @return the saved user
      */
-    public User save(UserDTO userDTO){
-        User user = dtoToUser(userDTO);
+    public Users save(UserDTO userDTO){
+        Users user = dtoToUser(userDTO);
         //assign user to meter
         Meter meter = new Meter(user);
         //assign meter to user
@@ -41,8 +41,8 @@ public class UserService {
      * @param meterId
      * @return the user of that meter id or throw Object Not Found
      */
-    public User findUserByMeterId(Long meterId){
-        Optional<User> optionalUser = userRepo.findByMeterId(meterId);
+    public Users findUserByMeterId(Long meterId){
+        Optional<Users> optionalUser = userRepo.findByMeterId(meterId);
         if(optionalUser.isPresent()){
             return optionalUser.get();
         }
@@ -51,17 +51,21 @@ public class UserService {
         }
     }
     //convert user to userDto
-    public UserDTO userToDTO(User user){
+    public UserDTO userToDTO(Users user){
         UserDTO dto = new UserDTO();
         BeanUtils.copyProperties(user, dto);
         //TODO: user && || meter may be null (check)
         dto.setMeterId(user.getMeter().getId());
         return dto;
     }
-    public User dtoToUser(UserDTO dto){
+    public Users dtoToUser(UserDTO dto){
         //TODO: dto may be null (check)
-        User user = new User();
+        Users user = new Users();
         BeanUtils.copyProperties(dto, user);
         return user;
+    }
+
+    public Users findById(Long id) {
+        return userRepo.findById(id).get();
     }
 }
