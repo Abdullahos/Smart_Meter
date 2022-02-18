@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'Irsokorta'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBFEA2C41457434191BF71D2742178C3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0E27C46AE8834A50AD8B40497854F5BF }}
           package: '*.jar'
